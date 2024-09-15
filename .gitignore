@@ -1,0 +1,9 @@
+*.exe
+*.txt
+*.o
+.vscode/*
+.build/*
+conway.cbp
+conway.depend
+conway.layout
+test.cpp
