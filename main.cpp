@@ -3,7 +3,7 @@
 #include <cstdio>
 #include "Evol.h"
 #include "Gene.h"
-#include "Cell.h"
+#include "cell.h"
 
 using namespace std;
 
@@ -11,7 +11,7 @@ const int numgene = 8640;
 
 vector <pair<int, int> > firstgen;
 int max8640=0;
-int cur_combine[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+int cur_combine[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 369, 172};
 pair<int, int> adj[] = {{1, 1}, {1, 0}, {1, -1}, {-1, 1}, {-1, 0}, {-1, -1}, {0, 1}, {0, -1}};
 CellData listcase;
 Gen cur;
@@ -20,27 +20,27 @@ int cnt=0;
 char res[16][16];
 
 const int patterntop2[] = {
-        29,
-        464,
+        448,
+        8,
+        448,
+        457,
+        62,
+        9,
+        22,
+        67,
+        274,
         36,
-        91,
-        299,
-        220,
-        160,
+        2,
         6,
-        0,
-        0,
-        82,
-        406,
-        103,
-        313,
-        64,
-        41
+        4,
+        256,
+        4,
+        335
     };
 
 void Cal() {
     cnt++;
-    printf("%d\n", cnt);
+    cerr<<cnt <<'\n';
     cur.init(firstgen);
     int sumliving = 0;
     for(int i=0; i<numgene; i++) {
@@ -66,7 +66,7 @@ void Cal() {
             printf("\n");
             bitset<9> s;
             for(int k=0; k<16; k++) {
-                s = listcase.cellData[listcase.randomord[k][cur_combine[k]]]^patterntop2[k];
+                s = listcase.cellData[cur_combine[k]]^patterntop2[k];
                 for(int j=8; j>=0; j--) {
                     res[2-j/3+k/4*3][k%4*3+2-(j%3)]=(s[j] ? '1' : '0');
                 }
@@ -109,10 +109,10 @@ void Try(int i) {
     }
     int j=cur_combine[i];
     while(j<512) {
-        initcell(listcase.cellData[listcase.randomord[i][j]]^patterntop2[i], i/4, i%4);
+        initcell(listcase.cellData[j]^patterntop2[i], i/4, i%4);
         cur_combine[i]=j;
         Try(i+1);
-        clearcell(listcase.cellData[listcase.randomord[i][j]]^patterntop2[i]);
+        clearcell(listcase.cellData[j]^patterntop2[i]);
         j++;
     }
     cur_combine[i] = 0;
