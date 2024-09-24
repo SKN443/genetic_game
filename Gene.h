@@ -16,7 +16,7 @@ struct pair_hash {
         auto h2 = hash<T2>{}(p.second);
         
         // Combine the two hash values
-        return h1 ^ (h2 << 1);  // Bitwise XOR and shift
+        return 5131830419411ULL * h1 + 3758991985019ULL * h2;  // Bitwise XOR and shift
     }
 };
 
