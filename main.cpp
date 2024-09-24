@@ -11,31 +11,16 @@ const int numgene = 8640;
 
 vector <pair<int, int> > firstgen;
 int max8640=0;
-int cur_combine[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 369, 172};
+int cur_combine[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 pair<int, int> adj[] = {{1, 1}, {1, 0}, {1, -1}, {-1, 1}, {-1, 0}, {-1, -1}, {0, 1}, {0, -1}};
 CellData listcase;
 Gen cur;
 Evol evoluate;
-int cnt=0;
+int cnt=0, Plus;
 char res[16][16];
 
 const int patterntop2[] = {
-        448,
-        8,
-        448,
-        457,
-        62,
-        9,
-        22,
-        67,
-        274,
-        36,
-        2,
-        6,
-        4,
-        256,
-        4,
-        335
+        448, 8, 448, 457, 286, 1, 18, 67, 44, 36, 260, 6, 4, 260, 260, 335
     };
 
 void Cal() {
@@ -54,7 +39,9 @@ void Cal() {
         }
 
         if(i==1000 && sumliving<450000) {
-            cout <<sumliving <<'\n';
+            return;
+        }
+        else if (i==3000 && sumliving<3100000) {
             return;
         }
         else if(i==4000 && sumliving>5500000) {
@@ -66,7 +53,7 @@ void Cal() {
             printf("\n");
             bitset<9> s;
             for(int k=0; k<16; k++) {
-                s = listcase.cellData[cur_combine[k]]^patterntop2[k];
+                s = cur_combine[k]^patterntop2[k];
                 for(int j=8; j>=0; j--) {
                     res[2-j/3+k/4*3][k%4*3+2-(j%3)]=(s[j] ? '1' : '0');
                 }
@@ -107,18 +94,21 @@ void Try(int i) {
         Cal();
         return;
     }
-    int j=cur_combine[i];
+    int id = (i+Plus)%16;
+    int j=cur_combine[id];
     while(j<512) {
-        initcell(listcase.cellData[j]^patterntop2[i], i/4, i%4);
-        cur_combine[i]=j;
+        initcell(j^patterntop2[id], id/4, id%4);
+        cur_combine[id]=j;
         Try(i+1);
-        clearcell(listcase.cellData[j]^patterntop2[i]);
+        clearcell(j^patterntop2[id]);
         j++;
     }
     cur_combine[i] = 0;
 }
 
 int main() {
+    cout <<"Plus = ";
+    cin >>Plus;
     Try(0);
     return 0;
 }
